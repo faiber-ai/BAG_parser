@@ -1,8 +1,5 @@
-import utils
 from database_sqlite import DatabaseSqlite
 
-
-db_sqlite = DatabaseSqlite()
-
-db_sqlite.test_bag_adressen()
-
+# Use context manager for database connection
+with DatabaseSqlite() as db_sqlite:
+    db_sqlite.test_bag_adressen()

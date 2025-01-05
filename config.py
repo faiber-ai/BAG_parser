@@ -1,22 +1,30 @@
 import locale
+
 import psutil
 
 version = 81
-version_date = '19 November 2024'
+version_date = "19 November 2024"
 
-locale.setlocale(locale.LC_ALL, 'nl_NL')
+try:
+    locale.setlocale(locale.LC_ALL, "nl_NL.UTF-8")
+except locale.Error:
+    try:
+        locale.setlocale(locale.LC_ALL, "nl_NL")
+    except locale.Error:
+        print("Warning: Could not set Dutch locale. Using system default.")
+        locale.setlocale(locale.LC_ALL, "")
 
 # Location of BAG zip file downloaded from kadaster. See readme.MD
-file_bag = 'input/bag.zip'
+file_bag = "input/bag.zip"
 
 # Location of gemeenten file downloaded from cbs.nl. See readme.MD
-file_gemeenten = 'input/gemeenten.csv'
+file_gemeenten = "input/gemeenten.csv"
 
 # output SQLite database with parsed BAG
-file_db_sqlite = 'output/bag.sqlite'
+file_db_sqlite = "output/bag.sqlite"
 
 # log file with progress, warnings and error messages. This info is also written to the console.
-file_log = 'output/bag_importer.log'
+file_log = "output/bag_importer.log"
 
 # The parser creates an 'adressen' table merging the data of nummers, panden, verblijfsobjecten, ligplaatsen and
 # standplaatsen tables into one single table. It only contains active addresses.
@@ -40,7 +48,7 @@ use_short_street_names = False
 # The data is stored in polygon geojson format in the geometry field.
 # And the database size will increase from 1.7GB to 16GB. Or 7GB with delete_no_longer_needed_bag_tables enabled.
 # Parsing will also take a few minutes more.
-parse_geometries = False
+parse_geometries = True
 
 # Sometimes the BAG contains addresses without a valid public space id. Generally those are invalid addresses.
 # They will be automatically deleted if the total number of invalid addresses is less than the number below.
@@ -53,4 +61,3 @@ delete_addresses_without_public_spaces_if_less_than = 10
 # module, you can just set the number manually.
 cpu_cores_used = psutil.cpu_count(False)
 # cpu_cores_used = 8
-
